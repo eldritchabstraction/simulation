@@ -33,3 +33,8 @@
 
 # cmake
 build/
+
+# eclipse
+*.cproject
+*.project
+*.settings
