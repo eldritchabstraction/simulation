@@ -31,17 +31,25 @@ and use them as intended.
 You should delete this comment.
 */
 
+#ifndef VIEW_H
+#define VIEW_H
 
-class View {
+#include <string>
+
+#include "geometry.h"
+
+class view {
 public:
 	// default constructor sets the default size, scale, and origin, outputs constructor message
-	View(); 
+    // TODO: implement
+	view() {}
     // destructor outputs a message
-    ~View();
+    // TODO: implement
+    ~view() {}
 	
 	// Save the supplied name and location for future use in a draw() call
 	// If the name is already present,the new location replaces the previous one.
-	void update_location(const std::string& name, Point location);
+	void update_location(const std::string& name, point location);
 	
 	// Remove the name and its location; no error if the name is not present.
 	void update_remove(const std::string& name);
@@ -58,7 +66,7 @@ public:
 	void set_scale(double scale_);
 	
 	// Any values are legal for the origin
-	void set_origin(Point origin_);
+	void set_origin(point origin_);
 	
 	// Set the parameters to the default values
 	void set_defaults();
@@ -66,10 +74,10 @@ public:
 private:
 	int size;			// current size of the display
 	double scale;		// distance per cell of the display
-	Point origin;		// coordinates of the lower-left-hand corner
+	point origin;		// coordinates of the lower-left-hand corner
 
 	// specified helper function				
-	bool get_subscripts(int &ix, int &iy, Point location) const;
+	bool get_subscripts(int &ix, int &iy, point location) const;
 
 };
 

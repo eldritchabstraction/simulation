@@ -8,18 +8,27 @@ with the user.
 If any protected or private members are shown here, then your class must also have them and use them as intended.
 You should delete this comment.
 */
-class Controller {
+#ifndef CONTROLLER_H
+#define CONTORLLER_H
+
+class controller {
 public:	
 	// output constructor message
-	Controller();
+    // TODO: implement
+	controller() {}
 	// output destructor message
-	~Controller();
+    // TODO: implement
+	~controller() {}
 
 	// Run the program by acccepting user commands
-	void run();
+    // TODO: implement
+	void run() {};
 
 private:
 	// Controller keeps its own pointer to the View because it has to manage the View.
 	// Future versions will need to manage more than one view.
-	View* view_ptr;
+	view* view_ptr;
 	
+};
+
+#endif

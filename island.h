@@ -11,23 +11,35 @@ If any protected or private members are shown here, then your class must also ha
 You should delete this comment.
 */
 
+#ifndef ISLAND_H
+#define ISLAND_H
+
+#include "geometry.h"
+#include "sim_object.h"
+
+class island : sim_object
+{
 public:
 	// initialize then output constructor message
-	Island (const std::string& name_, Point position_, double fuel_ = 0., double production_rate_ = 0.);
+    // TODO: implement
+	island (const std::string& name, point position, double fuel = 0., double production_rate = 0.) : sim_object(name) {};
 	// output destructor message
-	~Island();
+    // TODO: implement
+	~island() {}
 		
-	Point get_location() const override
-		{return position;}
+	point get_location() const override { return position; }
 
 	// if production_rate > 0, compute production_rate * unit time, and add to amount, and print an update message
-	void update() override;
+	// TODO: implement
+	void update() override {}
 
 	// output information about the current state
-	void describe() const override;
+	// TODO: implement
+	void describe() const override {}
 
 	// ask model to notify views of current state
-	void broadcast_current_state() const override;
+	// TODO: implement
+	void broadcast_current_state() const override {}
 
 	// Return whichever is less, the request or the amount left,
 	// update the amount on hand accordingly, and output the amount supplied.
@@ -37,6 +49,6 @@ public:
 	void accept_fuel(double amount);
 	
 private:
-	Point position;				// Location of this island
-
-
+	point position;				// Location of this island
+};
+#endif

@@ -6,33 +6,33 @@ the object's position and other information. */
 
 /* *** You may not add any additional classes, structs, functions etc to this file. */
 #include <string>
-struct Point;
+struct point;
 
-class Sim_object {
+class sim_object {
 public:
     // *** define the constructor in Sim_object.cpp to output the supplied message
-	Sim_object(const std::string& name_);
+    // TODO: implement
+	sim_object(const std::string& name) {}
 
     // *** define the destructor in Sim_object.cpp to output the supplied message
-    virtual ~Sim_object();
-	
-	const std::string& get_name() const
-		{return name;}
+    // TODO: implement
+    virtual ~sim_object() {}
+
+	const std::string& get_name() const { return name_; }
     
 	/* Interface for derived classes */
-	// *** declare the following as pure virtual functions 
 	// Ask model to notify views of current state
-    void broadcast_current_state() const
+    virtual void broadcast_current_state() const = 0;
 
-	Point get_location() const
-	void describe() const
-	void update()
+	virtual point get_location() const = 0;
+	virtual void describe() const = 0;
+	virtual void update() = 0;
 	
 	// Sim_objects must be unique, so disable copy/move construction, assignment
     // of base class; this will disable these operations for derived classes also.
 
 private:
-	std::string name;
+	std::string name_;
 };
 
 

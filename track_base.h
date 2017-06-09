@@ -1,8 +1,8 @@
 /*
-The Track_base class defines a base class of track objects, which are objects that move
-according to course and speed. They have a Point, a Course_speed, and an altitude 
-(set to zero for surface tracks). When updated, they change their Point 
-as a function of their Course_speed.
+The track_base class defines a base class of track objects, which are objects that move
+according to course and speed. They have a point, a course_speed, and an altitude
+(set to zero for surface tracks). When updated, they change their point
+as a function of their course_speed.
 
 Various values can be calculated for this track's position or motion as viewed from
 some other track.
@@ -11,38 +11,38 @@ some other track.
 #ifndef TRACK_BASE_H
 #define TRACK_BASE_H
 
-#include "Geometry.h"
-#include "Navigation.h"
+#include "geometry.h"
+#include "navigation.h"
 
-class Track_base {
+class track_base {
 public:
 	// Constructors
-	Track_base();
-	Track_base(Point position_);
-	Track_base(Point position_, Course_speed course_speed_, double altitude_ = 0.);
-	virtual ~Track_base();
+	track_base();
+	track_base(point position_);
+	track_base(point position_, course_speed course_speed_, double altitude_ = 0.);
+	virtual ~track_base();
 	
 	// Readers
-	Point get_position() const 
+	point get_position() const
 		{return position;}
-	Course_speed get_course_speed() const 
-		{return course_speed;}
+	course_speed get_course_speed() const
+		{return c_speed;}
 	double get_course() const 
-		{return course_speed.course;}
+		{return c_speed.course;}
 	double get_speed() const 
-		{return course_speed.speed;}
+		{return c_speed.speed;}
 	double get_altitude() const
 		{return altitude;}
 			
 	// Writers
-	void set_position(Point position_)
+	void set_position(point position_)
 		{position = position_;}
-	void set_course_speed(const Course_speed& course_speed_)
-		{course_speed = course_speed_;}
+	void set_course_speed(const course_speed& course_speed_)
+		{c_speed = course_speed_;}
 	void set_course (double course_)
-		{course_speed.course = course_;}
+		{c_speed.course = course_;}
 	void set_speed (double speed_)
-		{course_speed.speed = speed_;}
+		{c_speed.speed = speed_;}
 	void set_altitude (double altitude_)
 		{altitude = altitude_;}
 		
@@ -52,24 +52,24 @@ public:
 	*/
 
 	// range and bearing of this track from a specified position
-	Compass_position get_range_and_bearing_from(const Point & p) const;
+	compass_position get_range_and_bearing_from(const point & p) const;
 
 	// range and bearing of this track from a specified other track  
-	Compass_position get_range_and_bearing_from(const Track_base * track_ptr) const;
+	compass_position get_range_and_bearing_from(const track_base * track_ptr) const;
 
 	// range and bearing of closet point of approach of this track from a specified track
-	Compass_position get_CPA_range_and_bearing_from(const Track_base * track_ptr) const;
+	compass_position get_CPA_range_and_bearing_from(const track_base * track_ptr) const;
 	
 	// calculate whether this track is inbound towards a specified track
-	bool is_inbound_toward(const Track_base * track_ptr) const;
+	bool is_inbound_toward(const track_base * track_ptr) const;
 	
 	// Update the position of this object using the supplied time increment
 	// which is multiplied by the speed to get the distance to be moved
 	virtual void update_position(double time_increment);
 	
 private:
-	Point position;				// Current location
-	Course_speed course_speed;			// Current course & speed
+	point position;				// Current location
+	course_speed c_speed;			// Current course & speed
 	double altitude;					// Current altitude
 };
 

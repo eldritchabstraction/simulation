@@ -7,9 +7,12 @@ if there is no other virtual function that makes sense to mark as pure. Here we
 are defining it just to get the destructor message output.
 */
 
-Ship::~Ship()
+#include "ship.h"
+#include "track_base.h"
+
+ship::~ship()
 {
-	cout << "Ship "  << get_name() << " destructed" << endl;
+	cout << "ship "  << get_name() << " destructed" << endl;
 }
 
 /* Private Function Definitions */
@@ -20,7 +23,7 @@ fuel state. This function should be called only if the state is
 moving_to_position, moving_to_island, or moving_on_course.
 
 Track_base has an update_position(double time) function that computes the new position
-of an object after the specified time has elapsed. If the Ship is going to move
+of an object after the specified time has elapsed. If the ship is going to move
 for a full time unit (one hour), then it will get go the "full step" distance,
 so update_position would be called with time = 1.0. If we can move less than that,
 e.g. due to not enough fuel, update position  will be called with the corresponding
@@ -29,7 +32,8 @@ time less than 1.0.
 For clarity in specifying the computation, this code assumes the specified private variable names, 
 but you may change the variable names or enum class names, or state names if you wish (e.g. movement_state).
 */
-void Ship:: calculate_movement()
+/*
+void ship::calculate_movement()
 {
 	// Compute values for how much we need to move, and how much we can, and how long we can,
 	// given the fuel state, then decide what to do.
@@ -37,7 +41,9 @@ void Ship:: calculate_movement()
 	// get the distance to destination
 	double destination_distance = cartesian_distance(get_location(), destination_point);
 	// get full step distance we can move on this time step
-	double full_distance = get_speed() * time;
+	// TODO: how does track_base interact with this guy?
+	// double full_distance = track_base::get_speed() * time;
+	double full_distance = 0.;
 	// get fuel required for full step distance
 	double full_fuel_required = full_distance * fuel_consumption;	// tons = nm * tons/nm
 	// how far and how long can we sail in this time period based on the fuel state?
@@ -76,4 +82,5 @@ void Ship:: calculate_movement()
 			}
 		}
 }
+*/
 

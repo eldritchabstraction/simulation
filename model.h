@@ -19,26 +19,33 @@ If any protected or private members are shown here, then your class must also ha
 You should delete this comment.
 */
 
-// Declare the global model pointer
-class Model;
-extern Model* g_Model_ptr;
+#ifndef MODEL_H
+#define MODEL_H
 
-class Model {
+#include <string>
+
+#include "island.h"
+#include "geometry.h"
+#include "ship.h"
+#include "view.h"
+
+
+class model {
 public:
 	// create the initial objects, output constructor message
-	Model();
-	
+	model();
 	// destroy all objects, output destructor message
-	~Model();
+    // TODO: implement
+	~model() {}
 
 	// return the current time
 	int get_time() {return time;}
 
 	// Will throw Error("Island not found!") if no island of that name
-	Island* get_island_ptr(const std::string& name) const;
+	island* get_island_ptr(const std::string& name) const;
 
 	// Returns nullptr if there is no ship of that name
-	Ship* get_ship_ptr(const std::string& name) const;
+	ship* get_ship_ptr(const std::string& name) const;
 	
 	// tell all objects to describe themselves
 	void describe() const;
@@ -49,22 +56,22 @@ public:
 	// Throws Error if there is already a Ship or Island with that name.
 	// If insertion fails for any exception, the pointed-to Ship is deleted
 	// and the exception rethrown.
-	void add_ship(Ship*);
+	void add_ship(ship*);
 
-   /* Note: In Project 4 there is only one View. There will be multiple View objects
+    /* Note: In Project 4 there is only one View. There will be multiple View objects
     later. So implement the View services so that multiple Views are possible by
     using a container of View pointers.  You should delete this comment. */
     
 	/* View services */
 	// Attaching a View adds it to the container and causes it to be updated
     // with all current objects'location (or other state information.
-	void attach(View*);
+	void attach(view*);
 	// Detach the View by discarding the supplied pointer from the container of Views
     // - no updates sent to it thereafter.
-	void detach(View*);
+	void detach(view*);
 	
     // notify the views about an object's location
-	void notify_location(const std::string& name, Point location);
+	void notify_location(const std::string& name, point location);
 	// notify the views that an object is now gone
 	void notify_gone(const std::string& name);
 
@@ -75,4 +82,4 @@ private:
 
 
 };
-
+#endif

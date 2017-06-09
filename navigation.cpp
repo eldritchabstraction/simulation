@@ -3,8 +3,8 @@ Navigation.cpp implementation file.
 See Navigation.h for comments
 */
 
-#include "Navigation.h"
-#include "Geometry.h"
+#include "navigation.h"
+#include "geometry.h"
 
 #include <iostream>
 #include <cmath>
@@ -31,47 +31,47 @@ inline double to_other_degrees(double deg_in)
 }
 
 
-inline Polar_vector to_Polar_vector(Compass_vector cv)
+inline polar_vector to_polar_vector(compass_vector cv)
 {
-	return Polar_vector(cv.distance, to_radians(to_other_degrees(cv.direction)));
+	return polar_vector(cv.distance, to_radians(to_other_degrees(cv.direction)));
 }
 
-inline Polar_vector to_Polar_vector(Compass_position cp)
+inline polar_vector to_polar_vector(compass_position cp)
 {
-	return Polar_vector(cp.range, to_radians(to_other_degrees(cp.bearing)));
+	return polar_vector(cp.range, to_radians(to_other_degrees(cp.bearing)));
 }
 
 
-// *** Compass_position members ***
-Compass_position::Compass_position (const Polar_vector& pv)
+// *** compass_position members ***
+compass_position::compass_position (const polar_vector& pv)
 {
 	bearing = to_other_degrees(to_degrees(pv.theta));
 	range = pv.r;
 }
 
-// construct a Compass_position from two Points, giving
+// construct a compass_position from two points, giving
 // bearing and range of p2 from p1.
-Compass_position::Compass_position(const Point& p1, const Point& p2)
+compass_position::compass_position(const point& p1, const point& p2)
 {
-	Polar_vector pv (p1, p2);
+	polar_vector pv (p1, p2);
 	bearing = to_other_degrees(to_degrees(pv.theta));
 	range = pv.r;
 }
 	
 
-// *** Compass_vector members ***
+// *** compass_vector members ***
 
 
-// construct a Compass_vector from two positions, giving 
+// construct a compass_vector from two positions, giving
 // the vector for moving from p1 to p2.
-Compass_vector::Compass_vector(const Point& p1, const Point& p2)
+compass_vector::compass_vector(const point& p1, const point& p2)
 {
-	Polar_vector pv (p1, p2);
+	polar_vector pv (p1, p2);
 	direction = to_other_degrees(to_degrees(pv.theta));
 	distance = pv.r;
 }
 
-Compass_vector::Compass_vector (const Polar_vector& pv)
+compass_vector::compass_vector (const polar_vector& pv)
 {
 	direction = to_other_degrees(to_degrees(pv.theta));
 	distance = pv.r;
@@ -81,47 +81,47 @@ Compass_vector::Compass_vector (const Polar_vector& pv)
 // *** Overloaded operators ***
 // Operators are all defined as non-member functions for simplicity in documentation
 
-// Adding a Point and a Compass_position yields a Point
-Point operator+ (const Point& p, const Compass_position& cp)
+// Adding a point and a compass_position yields a point
+point operator+ (const point& p, const compass_position& cp)
 {
-	Point pn = Point(p + to_Polar_vector(cp));
+	point pn = point(p + to_polar_vector(cp));
 	return pn;
 }
 	
-Point operator+ (const Compass_position& cp, const Point& p)
+point operator+ (const compass_position& cp, const point& p)
 {
 	return p + cp;
 }
 
-// Adding a Point and a Compass_vector yields a Point
-Point operator+ (const Point& p, const Compass_vector& cv)
+// Adding a point and a compass_vector yields a point
+point operator+ (const point& p, const compass_vector& cv)
 {
-	Point pn = Point(p + to_Polar_vector(cv));
+	point pn = point(p + to_polar_vector(cv));
 	return pn;
 }
 
-Point operator+ (const Compass_vector& cv, const Point& p)
+point operator+ (const compass_vector& cv, const point& p)
 {
 	return p + cv;
 }
 
 
-// Multiplying a Course_speed by a double yields a Compass_vector
+// Multiplying a course_speed by a double yields a compass_vector
 // with same angle but scaled distance
-Compass_vector operator* (const Course_speed& cs, double d)
+compass_vector operator* (const course_speed& cs, double d)
 {
-	return Compass_vector(cs.course, cs.speed * d);
+	return compass_vector(cs.course, cs.speed * d);
 }
 
-Compass_vector operator* (double d, const Course_speed& cs)
+compass_vector operator* (double d, const course_speed& cs)
 {
 	return cs * d;
 }
 
 // Output operator overloads
 
-// output a Course_speed as "course deg, speed nm/hr"
-ostream& operator<< (ostream& os, const Course_speed& cs)
+// output a course_speed as "course deg, speed nm/hr"
+ostream& operator<< (ostream& os, const course_speed& cs)
 {
 	// if course will round to 360.00 in the output (2 decimal places),
 	// alter the output value to be 0.00; leave the actual direction alone.
@@ -138,8 +138,8 @@ ostream& operator<< (ostream& os, const Course_speed& cs)
 	return os;
 }
 
-// output a Compass_position as "bearing deg, range nm"
-ostream& operator<< (ostream& os, const Compass_position& cp)
+// output a compass_position as "bearing deg, range nm"
+ostream& operator<< (ostream& os, const compass_position& cp)
 {
 	// if bearing will round to 360.00 in the output (2 decimal places),
 	// alter the output value to be 0.00; leave the actual bearing alone.
@@ -156,8 +156,8 @@ ostream& operator<< (ostream& os, const Compass_position& cp)
 	return os;
 }
 
-// output a Compass_vector as "direction deg, distance nm"
-ostream& operator<< (ostream& os, const Compass_vector& cv)
+// output a compass_vector as "direction deg, distance nm"
+ostream& operator<< (ostream& os, const compass_vector& cv)
 {
 	// if direction will round to 360.00 in the output (2 decimal places),
 	// alter the output value to be 0.00; leave the actual direction alone.
@@ -182,18 +182,18 @@ ostream& operator<< (ostream& os, const Compass_vector& cv)
 // If the CPA is the current position, it is returned with the time being zero.
 // The algorithm used is based on code written by Al Gerheim.
 
-Compass_position compute_CPA(Course_speed ownship_cs, Course_speed target_cs, Compass_position target_position_cp, double& time_to_CPA)
+compass_position compute_CPA(course_speed ownship_cs, course_speed target_cs, compass_position target_position_cp, double& time_to_CPA)
 {
 	
 	// convert the two courses and speeds to Cartesian vectors
-	Cartesian_vector ownship_cv(Polar_vector(ownship_cs.speed, to_radians(to_other_degrees (ownship_cs.course))));
-	Cartesian_vector target_cv(Polar_vector(target_cs.speed, to_radians(to_other_degrees (target_cs.course))));
+	cartesian_vector ownship_cv(polar_vector(ownship_cs.speed, to_radians(to_other_degrees (ownship_cs.course))));
+	cartesian_vector target_cv(polar_vector(target_cs.speed, to_radians(to_other_degrees (target_cs.course))));
 	// compute a vector for the position of the target right now (time = 0) relative to ownship.
-	Cartesian_vector relative_target_position(to_Polar_vector(target_position_cp));
+	cartesian_vector relative_target_position(to_polar_vector(target_position_cp));
 	
 	// compute a vector that describes the target's motion relative to ownship,
 	// which is effectively at (0, 0).
-	Cartesian_vector relative_target_motion = target_cv - ownship_cv;
+	cartesian_vector relative_target_motion = target_cv - ownship_cv;
 
 	// compute parameter along relative motion line corresponding to closest point - note similarity to 
 	// distance-from-line computations - this is the time of closest approach.
@@ -214,8 +214,8 @@ Compass_position compute_CPA(Course_speed ownship_cs, Course_speed target_cs, Co
 	else {
 		time_to_CPA = fabs(t);
 		// advance the relative motion vector to time t in the future
-		Cartesian_vector future_target_displacement = time_to_CPA * relative_target_motion;
-		return Compass_position(Polar_vector(relative_target_position + future_target_displacement));
+		cartesian_vector future_target_displacement = time_to_CPA * relative_target_motion;
+		return compass_position(polar_vector(relative_target_position + future_target_displacement));
 		}
 }
 

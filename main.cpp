@@ -3,8 +3,8 @@ Main module. Your project must use this file as-is
 */
 
 
-#include "Model.h"
-#include "Controller.h"
+#include "model.h"
+#include "controller.h"
 
 #include <iostream>
 
@@ -12,6 +12,9 @@ using namespace std;
 
 // The main function creates the Model and Controller objects, 
 // then tells the Controller to run. 
+
+// Declare the global model pointer
+model* m;
 
 int main ()
 {	
@@ -21,12 +24,12 @@ int main ()
 	cout.precision(2);
 
 	// create a Model object;
-    g_Model_ptr = new Model;
+    m = new model;
 	// create the Controller object and go
-	Controller controller;
+	controller c;
 
-	controller.run();
+	c.run();
     
-    delete g_Model_ptr;
+    delete m;
 }
 
