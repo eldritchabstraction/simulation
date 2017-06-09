@@ -35,10 +35,6 @@ Error("Invalid name for new object!"
 Error("Ship not found!")
 Error("Invalid heading entered!")
 Error("Negative speed entered!")
-Error("Expected an integer!")
-Error("Expected a double!")
-Error("View is already open!")
-Error("View is not open!")
 
 /* Error exceptions emitted by Ship_factory */
 Error("Trying to create ship of unknown type!")

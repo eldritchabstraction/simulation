@@ -30,3 +30,23 @@ bool view::get_subscripts(int &ix, int &iy, point location) const
 	return true;
 }
 
+void view::set_defaults() {
+}
+
+void view::update_location(const std::string& name, point location) {
+}
+
+void view::update_remove(const std::string& name) {
+}
+
+void view::draw() const {
+}
+
+void view::set_size(int size_) {
+}
+
+void view::set_scale(double scale_) {
+}
+
+void view::set_origin(point origin_) {
+}

@@ -1,7 +1,3 @@
-
-/* create some islands and ships using the following code in the Model constructor.
-Do not change the execution order of these code fragments. You should delete this comment. */
-
 #include <iostream>
 
 #include "model.h"
@@ -22,3 +18,29 @@ model::model() : time(0)
 	cout << "Model constructed" << endl;
 }
 
+island* model::get_island_ptr(const std::string& name) const {
+}
+
+ship* model::get_ship_ptr(const std::string& name) const {
+}
+
+void model::describe() const {
+}
+
+void model::update() {
+}
+
+void model::add_ship(ship*) {
+}
+
+void model::attach(view*) {
+}
+
+void model::detach(view*) {
+}
+
+void model::notify_location(const std::string& name, point location) {
+}
+
+void model::notify_gone(const std::string& name) {
+}

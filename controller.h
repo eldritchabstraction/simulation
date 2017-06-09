@@ -11,24 +11,25 @@ You should delete this comment.
 #ifndef CONTROLLER_H
 #define CONTORLLER_H
 
+#include <string>
+#include <vector>
+
+#include "view.h"
+
 class controller {
 public:	
 	// output constructor message
-    // TODO: implement
-	controller() {}
+	controller();
 	// output destructor message
-    // TODO: implement
-	~controller() {}
+	~controller();
 
 	// Run the program by acccepting user commands
-    // TODO: implement
-	void run() {};
+	void run();
 
 private:
 	// Controller keeps its own pointer to the View because it has to manage the View.
 	// Future versions will need to manage more than one view.
-	view* view_ptr;
-	
+	view* view_;
 };
 
 #endif
