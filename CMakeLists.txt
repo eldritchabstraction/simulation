@@ -8,3 +8,4 @@ add_executable(simulation main.cpp geometry.cpp model.cpp view.cpp controller.cp
 add_subdirectory(test)
 
 add_executable(test_exception test/test_exception.cpp)
+add_executable(test_view test/test_view.cpp)
