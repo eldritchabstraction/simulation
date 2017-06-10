@@ -17,6 +17,7 @@
 using std::cout; using std::endl;
 using std::string;
 using std::vector;
+using std::runtime_error;
 
 extern model *m;
 
@@ -81,12 +82,12 @@ void controller::run(void)
         {
             // create the view; already exist error
             if (view_)
-                throw error("View is already open!");
+                throw runtime_error("View is already open!");
             view_= new view();
         } else if (cmd == "close") {
             // detach the view from the model and destroy; not exist error
             if (!view_)
-                throw error("View is not open!");
+                throw runtime_error("View is not open!");
             delete view_;
         } else if (cmd == "default") {
             // restore settings of the map
@@ -94,33 +95,23 @@ void controller::run(void)
         } else if (cmd == "size") {
             // read a single integer for the size of the square map
             int size;
-            try{
-                size = std::stoi(split[1], nullptr, 10);
-            } catch (std::invalid_argument &e) {
-                throw error(err_expect_int);
-            }
+            if (string_to_T<int>(split[1], size))
+                continue;
             view_->set_size(size);
         } else if (cmd == "zoom") {
             // read a double for the scale of the map (nm per cell)
             double scale;
-            try{
-                scale = std::stol(split[1], nullptr, 10);
-            } catch (std::invalid_argument &e) {
-                throw error(err_expect_double);
-            }
+            if (string_to_T<double>(split[1], scale))
+                continue;
             view_->set_scale(scale);
         } else if (cmd == "pan") {
             double x, y;
-            try{
-                x = std::stol(split[1], nullptr, 10);
-                y = std::stol(split[1], nullptr, 10);
-            } catch (std::invalid_argument &e) {
-                throw error(err_expect_double);
-            }
+            if (string_to_T(split[1], x) || string_to_T(split[2], y))
+                continue;
             view_->set_origin(point(x, y));
         } else if (cmd == "show") {
             if (!view_)
-                throw error("View is not open!");
+                throw runtime_error("View is not open!");
             view_->draw();
         //  *** model commands ***
         } else if (cmd == "quit") {
@@ -130,8 +121,10 @@ void controller::run(void)
         } else if (cmd ==  "go") {
             m->update();
         } else if (cmd == "create") {
-            // TODO: fully implement
-            // create_ship();
+            double x, y;
+            if (validate_ship_name(split[1]) || string_to_T(split[3], x) || string_to_T(split[4], y))
+                continue;
+            create_ship(split[1], split[2], point(x,y));
         }
 
         } catch (std::exception &e) {

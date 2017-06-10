@@ -3,4 +3,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON) #...is required...
 set(CMAKE_CXX_EXTENSIONS OFF) #...without compiler extensions like gnu++11
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 project(simulation)
-add_executable(simulation main.cpp geometry.cpp model.cpp view.cpp controller.cpp navigation.cpp island.cpp ship.cpp ship_factory.cpp track_base.cpp)
+add_executable(simulation main.cpp geometry.cpp model.cpp view.cpp controller.cpp navigation.cpp island.cpp ship.cpp ship_factory.cpp track_base.cpp utility.cpp)
+
+add_subdirectory(test)
+
+add_executable(test_exception test/test_exception.cpp)
