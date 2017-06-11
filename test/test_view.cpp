@@ -1,6 +1,8 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <sstream>
+#include <iomanip>
 
 /*
 Example:
@@ -41,13 +43,13 @@ Time 0: Enter command: Display size: 25, scale: 2.00, origin: (-10.00, -10.00)
  */
 
 using std::vector;
-using std::string;
+using std::string; using std::stringstream;
 
 void draw(vector<vector<string> > &map)
 {
-    for (auto row : map)
+    for (auto it = map.rbegin(); it != map.rend(); ++it )
     {
-        for (auto c : row)
+        for (auto c : *it)
             std::cout << c;
         std::cout << std::endl;
     }
@@ -61,26 +63,36 @@ void generate (int size, double scale, int x, int y)
     string blank = ". ";
     vector<vector<string> > map;
 
-    // push back row axis labels starting from sixth character
-    string row_labels = "     ";
-    for (int i = 0; i < (size * scale); i++)
+    // generate row labels
+    stringstream row_labels;
+    for (int i = 0; i < (size * scale); i += 3*scale)
     {
-        row_labels += x + (i * scale);
-        row_labels += "      "; // add six spaces
+        row_labels << std::setw(6) << (std::to_string(x + i));
     }
-
-
+    vector<string> temp_row_labels;
+    temp_row_labels.push_back(row_labels.str());
+    map.push_back(temp_row_labels);
     for (int i = 0; i < size; ++i)
     {
-        vector<string> row;
-        // push back mandatory column axis labels
+        stringstream row;
+        // push back column axis labels
+        if (i % 3 == 0)
+        {
+            double column_label = y + i * scale;
+            row << std::setw(4) << std::setprecision(3) << column_label << " ";
+        }
+        else
+            row << "     ";
         for (int j = 0; j < size; ++j)
         {
             // generate row by doing a check against coordinate information and
             // items
-            row.push_back(blank);
+            row << " " << x + (j * scale) << " " << y + (i * scale);
         }
-        map.push_back(row);
+        vector<string> temp_row;
+        temp_row.push_back(row.str());
+
+        map.push_back(temp_row);
     }
 
     draw(map);
@@ -88,9 +100,11 @@ void generate (int size, double scale, int x, int y)
 
 int main (void)
 {
-    int size = 25, x = -10, y = -10;
-    double scale = 2.0;
+    generate(25, 2.0, -10, -10);
 
-    generate(size, scale, x, y);
+    std::cout << std::endl << std::endl;
+
+    generate(25, 2.0, -20, -10);
+
 
 }
