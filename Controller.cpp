@@ -1,3 +1,5 @@
+#include "Controller.h"
+
 #include <iostream>
 #include <string>
 #include <stdexcept>
@@ -7,19 +9,18 @@
 #include <cctype>
 #include <algorithm>
 
-#include "model.h"
 #include "geometry.h"
-#include "ship.h"
-#include "ship_factory.h"
 #include "utility.h"
-#include "controller.h"
+#include "Model.h"
+#include "Ship.h"
+#include "Ship_factory.h"
 
 using std::cout; using std::endl;
 using std::string;
 using std::vector;
 using std::runtime_error;
 
-extern model *m;
+extern Model *global_model;
 
 vector<string> split_line(string input)
 {
@@ -43,13 +44,12 @@ vector<string> split_line(string input)
     return split;
 }
 
-controller::controller(): view_(NULL)
+Controller::Controller(): view_(NULL)
 {
-    // TODO: acquire a pointer to view
     cout << "controller constructing\n";
 }
 
-controller::~controller()
+Controller::~Controller()
 {
     cout << "controller destructing\n";
 }
@@ -57,7 +57,7 @@ controller::~controller()
 /*
  * run: a command loop where a user types in commands and they are carried out
  */
-void controller::run(void)
+void Controller::run(void)
 {
     while (1)
     {
@@ -83,7 +83,7 @@ void controller::run(void)
             // create the view; already exist error
             if (view_)
                 throw runtime_error("View is already open!");
-            view_= new view();
+            view_= new View();
         } else if (cmd == "close") {
             // detach the view from the model and destroy; not exist error
             if (!view_)
@@ -108,7 +108,7 @@ void controller::run(void)
             double x, y;
             if (string_to_T(split[1], x) || string_to_T(split[2], y))
                 continue;
-            view_->set_origin(point(x, y));
+            view_->set_origin(Point(x, y));
         } else if (cmd == "show") {
             if (!view_)
                 throw runtime_error("View is not open!");
@@ -117,14 +117,14 @@ void controller::run(void)
         } else if (cmd == "quit") {
             break;
         } else if (cmd == "status") {
-            m->describe();
+            global_model->describe();
         } else if (cmd ==  "go") {
-            m->update();
+            global_model->update();
         } else if (cmd == "create") {
             double x, y;
             if (validate_ship_name(split[1]) || string_to_T(split[3], x) || string_to_T(split[4], y))
                 continue;
-            create_ship(split[1], split[2], point(x,y));
+            create_ship(split[1], split[2], Point(x,y));
         }
 
         } catch (std::exception &e) {

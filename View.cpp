@@ -3,6 +3,8 @@
 
 /* *** This code assumes the specified private member variables. */
 
+#include "View.h"
+
 #include <cmath>
 #include <iostream>
 #include <iomanip>
@@ -10,7 +12,6 @@
 #include <vector>
 #include <algorithm>
 
-#include "view.h"
 #include "utility.h"
 
 using std::vector;
@@ -23,7 +24,7 @@ using std::cout;
 // scale is a double value, and size is an integer for the number of rows/columns 
 // currently being used for the grid.
 // Return true if the location is within the grid, false if not
-bool view::get_subscripts(int &ix, int &iy, point location) const
+bool View::get_subscripts(int &ix, int &iy, Point location) const
 {
 	// adjust with origin and scale
 	cartesian_vector subscripts = (location - origin_) / scale_;
@@ -41,22 +42,22 @@ bool view::get_subscripts(int &ix, int &iy, point location) const
 }
 
 // map defaults to 25 x 25, scale 2.0, origin(-10, -10)
-void view::set_defaults()
+void View::set_defaults()
 {
-    size_ = 25; scale_ = 2.0; origin_ = point(-10, -10);
+    size_ = 25; scale_ = 2.0; origin_ = Point(-10, -10);
 }
 
-void view::update_location(const std::string& name, point location)
+void View::update_location(const std::string& name, Point location)
 {
     auto it = sim_objects_.find(name);
 
     if (it == sim_objects_.end())
-        sim_objects_.insert(std::pair<string, point>(name, location));
+        sim_objects_.insert(std::pair<string, Point>(name, location));
     else
         sim_objects_[name] = location;
 }
 
-void view::update_remove(const std::string& name) {
+void View::update_remove(const std::string& name) {
 
     auto it = sim_objects_.find(name);
     if (it == sim_objects_.end())
@@ -65,7 +66,7 @@ void view::update_remove(const std::string& name) {
         sim_objects_.erase(it);
 }
 
-void view::generate(char_map_t &char_map) const
+void View::generate(char_map_t &char_map) const
 {
     int x = origin_.x, y = origin_.y;
 
@@ -77,7 +78,7 @@ void view::generate(char_map_t &char_map) const
 
     // our stategy is to make a copy of the sim_objects map and delete elements as we place them on
     // the grid, any elements remaining go on a special list "outside the map"
-    std::map<string, point> sim_objects;
+    std::map<string, Point> sim_objects;
     sim_objects.insert(sim_objects_.begin(), sim_objects_.end());
 
     char_map.push_back(row_labels);
@@ -102,7 +103,7 @@ void view::generate(char_map_t &char_map) const
             {
                 auto object = *it;
                 string object_name = object.first;
-                point object_point = object.second;
+                Point object_point = object.second;
                 double object_x = object_point.x, object_y = object_point.y;
                 // the match won't normally be precise, we basically just need the object to be in
                 // the "box" defined by the cursor
@@ -123,7 +124,7 @@ void view::generate(char_map_t &char_map) const
     }
 }
 
-void view::draw() const
+void View::draw() const
 {
     char_map_t char_map;
     generate(char_map);
@@ -137,15 +138,15 @@ void view::draw() const
 }
 
 // map size must be between (6, 30]
-void view::set_size(int size) {
+void View::set_size(int size) {
     size_ = size;
 }
 
 // map scale must be greater than 0.0
-void view::set_scale(double scale) {
+void View::set_scale(double scale) {
     scale_ = scale;
 }
 
-void view::set_origin(point origin) {
+void View::set_origin(Point origin) {
     origin_ = origin;
 }

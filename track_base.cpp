@@ -13,12 +13,12 @@ track_base::track_base() : altitude(0.)
 	std::cout << "track_base constructed" << std::endl;
 }
 
-track_base::track_base(point position_) : position(position_), altitude(0.)
+track_base::track_base(Point position_) : position(position_), altitude(0.)
 {
 	std::cout << "track_base constructed" << std::endl;
 }
 
-track_base::track_base(point position_, course_speed course_speed_, double altitude_) :
+track_base::track_base(Point position_, course_speed course_speed_, double altitude_) :
 		position(position_), c_speed(course_speed_), altitude(altitude_)
 {
 	std::cout << "track_base constructed" << std::endl;
@@ -31,7 +31,7 @@ track_base::~track_base()
 
 
 // range and bearing of this track from a specified position
-compass_position track_base::get_range_and_bearing_from (const point& p) const
+compass_position track_base::get_range_and_bearing_from (const Point& p) const
 {
 	compass_position result(p, position);
 	return result;

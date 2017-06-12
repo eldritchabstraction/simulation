@@ -18,12 +18,12 @@ class track_base {
 public:
 	// Constructors
 	track_base();
-	track_base(point position_);
-	track_base(point position_, course_speed course_speed_, double altitude_ = 0.);
+	track_base(Point position_);
+	track_base(Point position_, course_speed course_speed_, double altitude_ = 0.);
 	virtual ~track_base();
 	
 	// Readers
-	point get_position() const
+	Point get_position() const
 		{return position;}
 	course_speed get_course_speed() const
 		{return c_speed;}
@@ -35,7 +35,7 @@ public:
 		{return altitude;}
 			
 	// Writers
-	void set_position(point position_)
+	void set_position(Point position_)
 		{position = position_;}
 	void set_course_speed(const course_speed& course_speed_)
 		{c_speed = course_speed_;}
@@ -52,7 +52,7 @@ public:
 	*/
 
 	// range and bearing of this track from a specified position
-	compass_position get_range_and_bearing_from(const point & p) const;
+	compass_position get_range_and_bearing_from(const Point & p) const;
 
 	// range and bearing of this track from a specified other track  
 	compass_position get_range_and_bearing_from(const track_base * track_ptr) const;
@@ -68,7 +68,7 @@ public:
 	virtual void update_position(double time_increment);
 	
 private:
-	point position;				// Current location
+	Point position;				// Current location
 	course_speed c_speed;			// Current course & speed
 	double altitude;					// Current altitude
 };

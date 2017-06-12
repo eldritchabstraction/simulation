@@ -63,7 +63,7 @@ the compass_vector for its course and the time to get its new point:
 #include <iosfwd>
 
 // forward declarations
-struct point;
+struct Point;
 struct polar_vector;
 struct course_speed;
 struct compass_position;
@@ -82,7 +82,7 @@ struct compass_position
 
 	// construct a compass_position from two points, giving
 	// bearing and range of p2 from p1.
-	compass_position(const point& p1, const point& p2);
+	compass_position(const Point& p1, const Point& p2);
 
 	// construct a compass_position from a polar_vector
 	compass_position (const polar_vector& pv);
@@ -117,7 +117,7 @@ struct compass_vector
 
 	// construct a compass_vector from two points, giving
 	// the vector for moving from p1 to p2.
-	compass_vector(const point& p1, const point& p2);
+	compass_vector(const Point& p1, const Point& p2);
 
 };
 
@@ -125,12 +125,12 @@ struct compass_vector
 // Operators are all defined as non-member functions for simplicity in documentation
 
 // Adding a point and a compass_position yields a point
-point operator+ (const point& p, const compass_position& cp);
-point operator+ (const compass_position& cp, const point& p);
+Point operator+ (const Point& p, const compass_position& cp);
+Point operator+ (const compass_position& cp, const Point& p);
 
 // Adding a point and a compass_vector yields a point
-point operator+ (const point& p, const compass_vector& cv);
-point operator+ (const compass_vector& cv, const point& p);
+Point operator+ (const Point& p, const compass_vector& cv);
+Point operator+ (const compass_vector& cv, const Point& p);
 
 // Multiplying a course_speed by a double yields a compass_vector
 compass_vector operator* (const course_speed& cs, double d);

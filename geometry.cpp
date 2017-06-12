@@ -17,18 +17,18 @@ const double pi = 2. * atan2(1., 0.);
 
 // point members
 // compare two positions
-bool point::operator== (const point& rhs) const
+bool Point::operator== (const Point& rhs) const
 {
 	return (x == rhs.x && y == rhs.y);
 }
  
-bool point::operator!= (const point& rhs) const
+bool Point::operator!= (const Point& rhs) const
 {
 	return (x != rhs.x || y != rhs.y);
 }
 
 // return the distance between two points
-double cartesian_distance (const point& p1, const point& p2)
+double cartesian_distance (const Point& p1, const Point& p2)
 {
 	double xd = p2.x - p1.x;
 	double yd = p2.y - p1.y;
@@ -40,7 +40,7 @@ double cartesian_distance (const point& p1, const point& p2)
 // construct a cartesian_vector from two points,
 // showing the vector from p1 to p2 
 // that is, p1 + cv => p2
-cartesian_vector::cartesian_vector(const point& p1, const point& p2)
+cartesian_vector::cartesian_vector(const Point& p1, const Point& p2)
 {
 	delta_x = p2.x - p1.x;
 	delta_y = p2.y - p1.y;
@@ -67,7 +67,7 @@ polar_vector::polar_vector(const cartesian_vector& cv)
 // construct a polar_vector from two points,
 // showing the vector from p1 to p2 
 // that is, p1 + pv => p2
-polar_vector::polar_vector(const point& p1, const point& p2)
+polar_vector::polar_vector(const Point& p1, const Point& p2)
 {
 	polar_vector pv (cartesian_vector(p1, p2));
 	r = pv.r;
@@ -81,30 +81,30 @@ polar_vector::polar_vector(const point& p1, const point& p2)
 
 // Subtract two points to get a cartesian_vector
 // p2's components are subtracted from p1
-cartesian_vector operator- (const point& p1, const point& p2)
+cartesian_vector operator- (const Point& p1, const Point& p2)
 {
 	return cartesian_vector(p1.x - p2.x, p1.y - p2.y);
 }
 
 // Add a point and a cartesian_vector to get the displaced point
-point operator+ (const point& p, const cartesian_vector& cv)
+Point operator+ (const Point& p, const cartesian_vector& cv)
 {
-	return point(p.x + cv.delta_x, p.y + cv.delta_y);
+	return Point(p.x + cv.delta_x, p.y + cv.delta_y);
 }
 
-point operator+ (const cartesian_vector& cv, const point& p)
+Point operator+ (const cartesian_vector& cv, const Point& p)
 {
 	return p + cv;
 }
 	
 // Add a point and a polar_vector to get the displaced point
-point operator+ (const point& p, const polar_vector& pv)
+Point operator+ (const Point& p, const polar_vector& pv)
 {
 	cartesian_vector cv (pv);
 	return cv + p;
 }
 
-point operator+ (const polar_vector& pv, const point& p)
+Point operator+ (const polar_vector& pv, const Point& p)
 {
 	return p + pv;
 }
@@ -166,7 +166,7 @@ polar_vector operator* (double d, const polar_vector& pv)
 
 // Output operators
 // output a point as "(x, y)"
-ostream& operator<< (ostream& os, const point& p)
+ostream& operator<< (ostream& os, const Point& p)
 {
 	os << '(' << p.x << ", " << p.y << ')';
 	return os;

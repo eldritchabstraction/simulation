@@ -7,10 +7,11 @@ if there is no other virtual function that makes sense to mark as pure. Here we
 are defining it just to get the destructor message output.
 */
 
-#include "ship.h"
+#include "Ship.h"
+
 #include "track_base.h"
 
-ship::~ship()
+Ship::~Ship()
 {
 	cout << "ship "  << get_name() << " destructed" << endl;
 }

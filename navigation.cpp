@@ -51,7 +51,7 @@ compass_position::compass_position (const polar_vector& pv)
 
 // construct a compass_position from two points, giving
 // bearing and range of p2 from p1.
-compass_position::compass_position(const point& p1, const point& p2)
+compass_position::compass_position(const Point& p1, const Point& p2)
 {
 	polar_vector pv (p1, p2);
 	bearing = to_other_degrees(to_degrees(pv.theta));
@@ -64,7 +64,7 @@ compass_position::compass_position(const point& p1, const point& p2)
 
 // construct a compass_vector from two positions, giving
 // the vector for moving from p1 to p2.
-compass_vector::compass_vector(const point& p1, const point& p2)
+compass_vector::compass_vector(const Point& p1, const Point& p2)
 {
 	polar_vector pv (p1, p2);
 	direction = to_other_degrees(to_degrees(pv.theta));
@@ -82,25 +82,25 @@ compass_vector::compass_vector (const polar_vector& pv)
 // Operators are all defined as non-member functions for simplicity in documentation
 
 // Adding a point and a compass_position yields a point
-point operator+ (const point& p, const compass_position& cp)
+Point operator+ (const Point& p, const compass_position& cp)
 {
-	point pn = point(p + to_polar_vector(cp));
+	Point pn = Point(p + to_polar_vector(cp));
 	return pn;
 }
 	
-point operator+ (const compass_position& cp, const point& p)
+Point operator+ (const compass_position& cp, const Point& p)
 {
 	return p + cp;
 }
 
 // Adding a point and a compass_vector yields a point
-point operator+ (const point& p, const compass_vector& cv)
+Point operator+ (const Point& p, const compass_vector& cv)
 {
-	point pn = point(p + to_polar_vector(cv));
+	Point pn = Point(p + to_polar_vector(cv));
 	return pn;
 }
 
-point operator+ (const compass_vector& cv, const point& p)
+Point operator+ (const compass_vector& cv, const Point& p)
 {
 	return p + cv;
 }

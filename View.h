@@ -43,18 +43,18 @@ You should delete this comment.
 
 typedef std::vector<std::vector<std::string> > char_map_t;
 
-class view {
+class View {
 public:
 	// default constructor sets the default size, scale, and origin, outputs constructor message
     // TODO: implement
-	view(): size_(25), scale_(2.0), origin_(point(-10, -10)){}
+	View(): size_(25), scale_(2.0), origin_(Point(-10, -10)){}
     // destructor outputs a message
     // TODO: implement
-    ~view() {}
+    ~View() {}
 	
 	// Save the supplied name and location for future use in a draw() call
 	// If the name is already present,the new location replaces the previous one.
-	void update_location(const std::string& name, point location);
+	void update_location(const std::string& name, Point location);
 	
 	// Remove the name and its location; no error if the name is not present.
 	void update_remove(const std::string& name);
@@ -71,7 +71,7 @@ public:
 	void set_scale(double scale_);
 	
 	// Any values are legal for the origin
-	void set_origin(point origin_);
+	void set_origin(Point origin_);
 	
 	// Set the parameters to the default values
 	void set_defaults();
@@ -79,17 +79,17 @@ public:
 private:
 	int size_;			// current size of the display
 	double scale_;		// distance per cell of the display
-	point origin_;		// coordinates of the lower-left-hand corner
+	Point origin_;		// coordinates of the lower-left-hand corner
 
 	// specified helper function				
-	bool get_subscripts(int &ix, int &iy, point location) const;
+	bool get_subscripts(int &ix, int &iy, Point location) const;
 
 	// associated with drawing, this function generates a vector of vector
 	// strings to draw
 	void generate(char_map_t &map) const;
 
 	// a list of sim objects modified by update_location and update_remove
-	std::map<std::string, point> sim_objects_;
+	std::map<std::string, Point> sim_objects_;
 };
 
 #endif

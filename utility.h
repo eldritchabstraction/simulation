@@ -9,6 +9,7 @@
 #define const_string(x,y) const std::string x = y
 const_string(err_expect_int         , "Expected an integer!");
 const_string(err_expect_double      , "Expected a double!");
+const_string(err_object_dupe        , "New object has duplicate name!");
 
 /*
 class error : public std::exception {

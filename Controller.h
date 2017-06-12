@@ -14,14 +14,14 @@ You should delete this comment.
 #include <string>
 #include <vector>
 
-#include "view.h"
+#include "View.h"
 
-class controller {
+class Controller {
 public:	
 	// output constructor message
-	controller();
+	Controller();
 	// output destructor message
-	~controller();
+	~Controller();
 
 	// Run the program by acccepting user commands
 	void run();
@@ -29,7 +29,7 @@ public:
 private:
 	// Controller keeps its own pointer to the View because it has to manage the View.
 	// Future versions will need to manage more than one view.
-	view* view_;
+	View* view_;
 };
 
 #endif

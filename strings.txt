@@ -7,7 +7,6 @@ output between the consecutive double-quote marks.
 */
 
 /* Text strings emitted and Error exceptions thrown by Model */
-"Model constructed"
 "Model destructed"
 Error("Island not found!")
 Error("New object has duplicate name!")

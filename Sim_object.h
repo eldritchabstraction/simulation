@@ -6,17 +6,17 @@ the object's position and other information. */
 
 /* *** You may not add any additional classes, structs, functions etc to this file. */
 #include <string>
-struct point;
+struct Point;
 
-class sim_object {
+class Sim_object {
 public:
     // *** define the constructor in Sim_object.cpp to output the supplied message
     // TODO: implement
-	sim_object(const std::string& name) {}
+	Sim_object(const std::string& name) {}
 
     // *** define the destructor in Sim_object.cpp to output the supplied message
     // TODO: implement
-    virtual ~sim_object() {}
+    virtual ~Sim_object() {}
 
 	const std::string& get_name() const { return name_; }
     
@@ -24,7 +24,7 @@ public:
 	// Ask model to notify views of current state
     virtual void broadcast_current_state() const = 0;
 
-	virtual point get_location() const = 0;
+	virtual Point get_location() const = 0;
 	virtual void describe() const = 0;
 	virtual void update() = 0;
 	

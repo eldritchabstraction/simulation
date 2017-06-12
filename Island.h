@@ -15,31 +15,28 @@ You should delete this comment.
 #define ISLAND_H
 
 #include "geometry.h"
-#include "sim_object.h"
+#include "Sim_object.h"
 
-class island : sim_object
+class Island : Sim_object
 {
 public:
 	// initialize then output constructor message
     // TODO: implement
-	island (const std::string& name, point position, double fuel = 0., double production_rate = 0.) : sim_object(name) {};
+	Island (const std::string& name, Point position, double fuel = 0., double production_rate = 0.) :
+	    Sim_object(name), position_(position), fuel_(fuel), production_rate_(production_rate) {};
+
 	// output destructor message
-    // TODO: implement
-	~island() {}
-		
-	point get_location() const override { return position; }
+	~Island();
+	Point get_location() const override { return position_; }
 
 	// if production_rate > 0, compute production_rate * unit time, and add to amount, and print an update message
-	// TODO: implement
-	void update() override {}
+	void update() override;
 
 	// output information about the current state
-	// TODO: implement
-	void describe() const override {}
+	void describe() const override;
 
 	// ask model to notify views of current state
-	// TODO: implement
-	void broadcast_current_state() const override {}
+	void broadcast_current_state() const override;
 
 	// Return whichever is less, the request or the amount left,
 	// update the amount on hand accordingly, and output the amount supplied.
@@ -49,6 +46,8 @@ public:
 	void accept_fuel(double amount);
 	
 private:
-	point position;				// Location of this island
+	Point position_;				// Location of this island
+	double fuel_;
+	double production_rate_;
 };
 #endif
