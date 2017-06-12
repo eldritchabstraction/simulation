@@ -26,9 +26,9 @@ class compare_ftor
 {
 public:
     compare_ftor(std::string string) : string_(string) {}
-    bool operator()(std::string &input) { return input == string_; }
+    bool operator()(const std::string &input) { return input == string_; }
 
-private:
+protected:
     std::string string_;
 };
 

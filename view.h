@@ -35,14 +35,19 @@ You should delete this comment.
 #define VIEW_H
 
 #include <string>
+#include <vector>
+#include <map>
 
 #include "geometry.h"
+#include "utility.h"
+
+typedef std::vector<std::vector<std::string> > char_map_t;
 
 class view {
 public:
 	// default constructor sets the default size, scale, and origin, outputs constructor message
     // TODO: implement
-	view() {}
+	view(): size_(25), scale_(2.0), origin_(point(-10, -10)){}
     // destructor outputs a message
     // TODO: implement
     ~view() {}
@@ -72,13 +77,19 @@ public:
 	void set_defaults();
 				
 private:
-	int size;			// current size of the display
-	double scale;		// distance per cell of the display
-	point origin;		// coordinates of the lower-left-hand corner
+	int size_;			// current size of the display
+	double scale_;		// distance per cell of the display
+	point origin_;		// coordinates of the lower-left-hand corner
 
 	// specified helper function				
 	bool get_subscripts(int &ix, int &iy, point location) const;
 
+	// associated with drawing, this function generates a vector of vector
+	// strings to draw
+	void generate(char_map_t &map) const;
+
+	// a list of sim objects modified by update_location and update_remove
+	std::map<std::string, point> sim_objects_;
 };
 
 #endif
