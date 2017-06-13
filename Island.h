@@ -17,7 +17,7 @@ You should delete this comment.
 #include "geometry.h"
 #include "Sim_object.h"
 
-class Island : Sim_object
+class Island : public Sim_object
 {
 public:
 	// initialize then output constructor message

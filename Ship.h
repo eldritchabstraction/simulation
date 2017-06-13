@@ -15,16 +15,6 @@ The is a "fat interface" for the capabilities of derived types of ships. These
 functions are implemented in this class to throw an Error exception.
 */
 
-/* 
-This skeleton file shows the required public and protected interface for the class, which you may not modify. 
-If no protected members are shown, there must be none in your version. 
-If any protected or private members are shown here, then your class must also have them and use them as intended.
-You may define simple reader functions in the class declaration if you wish 
-by changing the prototype to the definition. Your .h file for a component will always
-be kept together with your .cpp file for the component.
-You should delete this comment.
-*/
-
 #ifndef SHIP_H
 #define SHIP_H
 
@@ -36,12 +26,28 @@ You should delete this comment.
 
 using namespace std;
 
-class Ship : public Sim_object
+enum states
+{
+    state_move_position = 0b1,            // moving to position
+    state_move_island   = 0b10,           // moving to island
+    state_move_course   = 0b100,          // moving on course
+    state_docked        = 0b1000,
+    state_stopped       = 0b10000,
+    state_dead_water    = 0b100000,       // dead in water
+    state_sinking       = 0b1000000,
+    state_sunk          = 0b10000000,
+    state_bottom        = 0b100000000,
+};
+
+class Ship : public Sim_object, private track_base
 {
 public:
 	// initialize, then output constructor message
-	Ship(const std::string& name, Point position, double fuel_capacity,
-		double maximum_speed, double fuel_consumption, int resistance) : Sim_object(name) {}
+	Ship(const std::string& name, Point position, double fuel_capacity, double maximum_speed,
+	    double fuel_consumption, int resistance) : Sim_object(name),
+	    max_fuel_(fuel_capacity), fuel_consumption_(fuel_consumption), fuel_(fuel_capacity),
+		resistance_(resistance), destination_island_(nullptr), max_speed_(maximum_speed),
+		state_(state_stopped) {}
 		
 	// made pure virtual to mark this class as abstract, but defined anyway
 	// to output destructor message
@@ -74,52 +80,49 @@ public:
 	
 	/*** Interface to derived classes ***/
 	// Update the state of the ship
-	// TODO: implement
-	void update() override {}
+	void update() override;
 	// output a description of current state to cout
-	// TODO: implement
-	void describe() const override {}
+	void describe() const override;
 	
-	// TODO: implement
-	void broadcast_current_state() const override {}
+	void broadcast_current_state() const override;
 	
 	/*** Command functions ***/
 	// Start moving to a destination position at a speed
      // may throw Error("ship cannot move!")
      // may throw Error("ship cannot go that fast!")
-	virtual void set_destination_position_and_speed(Point destination_position, double speed) {}
+	virtual void set_destination_position_and_speed(Point destination_position, double speed);
 	// Start moving to a destination island at a speed
      // may throw Error("ship cannot move!")
      // may throw Error("ship cannot go that fast!")
-	virtual void set_destination_island_and_speed(Island* destination_island, double speed) {}
+	virtual void set_destination_island_and_speed(Island* destination_island, double speed);
 	// Start moving on a course and speed
      // may throw Error("ship cannot move!")
      // may throw Error("ship cannot go that fast!");
-	virtual void set_course_and_speed(double course, double speed) {}
+	virtual void set_course_and_speed(double course, double speed);
 	// Stop moving
      // may throw Error("ship cannot move!");
-	virtual void stop() {}
+	virtual void stop();
 	// dock at an island - set our position = island's position, go into Docked state
      // may throw Error("Can't dock!");
-	virtual void dock(Island* island_ptr) {}
+	virtual void dock(Island* island_ptr);
 	// Refuel - must already be docked at an island; fill takes as much as possible
      // may throw Error("Must be docked!");
-	virtual void refuel() {}
+	virtual void refuel();
 
 	/*** Fat interface command functions ***/
 	// These functions throw an Error exception for this class
     // will always throw Error("Cannot load at a destination!");
-	virtual void set_load_destination(Island*) {}
+	virtual void set_load_destination(Island*);
     // will always throw Error("Cannot unload at a destination!");
-	virtual void set_unload_destination(Island*) {}
+	virtual void set_unload_destination(Island*);
     // will always throw Error("Cannot attack!");
-	virtual void attack(Ship* target_ptr_) {}
+	virtual void attack(Ship* target_ptr_);
     // will always throw Error("Cannot attack!");
-	virtual void stop_attack() {}
+	virtual void stop_attack();
 
 	// interactions with other objects
 	// receive a hit from an attacker
-	virtual void receive_hit(int hit_force, Ship* attacker_ptr) {}
+	virtual void receive_hit(int hit_force, Ship* attacker_ptr);
 
 protected:
 	// future projects may need additional protected member functions
@@ -130,13 +133,18 @@ protected:
 	// return pointer to current destination island, nullptr if not set
 	Island* get_destination_island() const;
 
+	int state_;
 private:
 	double fuel_;						// Current amount of fuel
+	double max_fuel_;
 	double fuel_consumption_;			// tons/nm required
+	double max_speed_;
+
 	Point destination_point_;			// Current destination position
 	Island* destination_island_;		// Current destination island, if any
+	int resistance_;                 // ship hitpoints, essentially
 	
 	// Updates position, fuel, and movement_state, assuming 1 time unit (1 hr)
-	void calculate_movement();
+	void calculate_movement(void);
 };
 #endif

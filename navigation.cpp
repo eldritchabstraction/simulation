@@ -31,7 +31,7 @@ inline double to_other_degrees(double deg_in)
 }
 
 
-inline polar_vector to_polar_vector(compass_vector cv)
+inline polar_vector to_polar_vector(Compass_vector cv)
 {
 	return polar_vector(cv.distance, to_radians(to_other_degrees(cv.direction)));
 }
@@ -64,14 +64,14 @@ compass_position::compass_position(const Point& p1, const Point& p2)
 
 // construct a compass_vector from two positions, giving
 // the vector for moving from p1 to p2.
-compass_vector::compass_vector(const Point& p1, const Point& p2)
+Compass_vector::Compass_vector(const Point& p1, const Point& p2)
 {
 	polar_vector pv (p1, p2);
 	direction = to_other_degrees(to_degrees(pv.theta));
 	distance = pv.r;
 }
 
-compass_vector::compass_vector (const polar_vector& pv)
+Compass_vector::Compass_vector (const polar_vector& pv)
 {
 	direction = to_other_degrees(to_degrees(pv.theta));
 	distance = pv.r;
@@ -94,13 +94,13 @@ Point operator+ (const compass_position& cp, const Point& p)
 }
 
 // Adding a point and a compass_vector yields a point
-Point operator+ (const Point& p, const compass_vector& cv)
+Point operator+ (const Point& p, const Compass_vector& cv)
 {
 	Point pn = Point(p + to_polar_vector(cv));
 	return pn;
 }
 
-Point operator+ (const compass_vector& cv, const Point& p)
+Point operator+ (const Compass_vector& cv, const Point& p)
 {
 	return p + cv;
 }
@@ -108,12 +108,12 @@ Point operator+ (const compass_vector& cv, const Point& p)
 
 // Multiplying a course_speed by a double yields a compass_vector
 // with same angle but scaled distance
-compass_vector operator* (const course_speed& cs, double d)
+Compass_vector operator* (const course_speed& cs, double d)
 {
-	return compass_vector(cs.course, cs.speed * d);
+	return Compass_vector(cs.course, cs.speed * d);
 }
 
-compass_vector operator* (double d, const course_speed& cs)
+Compass_vector operator* (double d, const course_speed& cs)
 {
 	return cs * d;
 }
@@ -157,7 +157,7 @@ ostream& operator<< (ostream& os, const compass_position& cp)
 }
 
 // output a compass_vector as "direction deg, distance nm"
-ostream& operator<< (ostream& os, const compass_vector& cv)
+ostream& operator<< (ostream& os, const Compass_vector& cv)
 {
 	// if direction will round to 360.00 in the output (2 decimal places),
 	// alter the output value to be 0.00; leave the actual direction alone.

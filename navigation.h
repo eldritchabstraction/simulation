@@ -67,7 +67,7 @@ struct Point;
 struct polar_vector;
 struct course_speed;
 struct compass_position;
-struct compass_vector;
+struct Compass_vector;
 
 /* compass_position */
 // compass_position describes a position in terms of bearing and range
@@ -104,20 +104,20 @@ struct course_speed
 
 /* compass_vector */
 // compass_vector describes a displacement in terms of compass direction and distance
-struct compass_vector
+struct Compass_vector
 {
 	double direction;
 	double distance;	
 
-	compass_vector (double direction_ = 0., double distance_ = 0.) :
+	Compass_vector (double direction_ = 0., double distance_ = 0.) :
 		direction(direction_), distance(distance_)
 		{}
 
-	compass_vector (const polar_vector& pv);
+	Compass_vector (const polar_vector& pv);
 
 	// construct a compass_vector from two points, giving
 	// the vector for moving from p1 to p2.
-	compass_vector(const Point& p1, const Point& p2);
+	Compass_vector(const Point& p1, const Point& p2);
 
 };
 
@@ -129,17 +129,17 @@ Point operator+ (const Point& p, const compass_position& cp);
 Point operator+ (const compass_position& cp, const Point& p);
 
 // Adding a point and a compass_vector yields a point
-Point operator+ (const Point& p, const compass_vector& cv);
-Point operator+ (const compass_vector& cv, const Point& p);
+Point operator+ (const Point& p, const Compass_vector& cv);
+Point operator+ (const Compass_vector& cv, const Point& p);
 
 // Multiplying a course_speed by a double yields a compass_vector
-compass_vector operator* (const course_speed& cs, double d);
-compass_vector operator* (double d, const course_speed& cs);
+Compass_vector operator* (const course_speed& cs, double d);
+Compass_vector operator* (double d, const course_speed& cs);
 
 // Output operator overloads
 std::ostream& operator<< (std::ostream& os, const course_speed& p);
 std::ostream& operator<< (std::ostream& os, const compass_position& cp);
-std::ostream& operator<< (std::ostream& os, const compass_vector& cv);
+std::ostream& operator<< (std::ostream& os, const Compass_vector& cv);
 
 // *** Other navigation functions  ***
 
