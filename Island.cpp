@@ -9,20 +9,20 @@ using namespace std;
 
 Island::~Island()
 {
-    cout << "Island " << this->name() << " destructed/n";
+    cout << "Island " << name() << " destructed/n";
 }
 
 void Island::update()
 {
     if (production_rate_ > 0)
         fuel_ += production_rate_;
-    cout << "Island " << this->name() << " now has " << fuel_ << " tons/n";
+    cout << "Island " << name() << " now has " << fuel_ << " tons/n";
 }
 
 void Island::describe() const
 {
-    cout << "Island " << this->name() << " at position " << position_.x << "," << position_.y <<
-        " fuel available: " << fuel_  << " tons/n";
+    cout << "\nIsland " << name() << " at position " << location() << endl;
+    cout << "Fuel available: " << fuel_  << " tons\n";
 }
 
 void Island::broadcast_current_state() const

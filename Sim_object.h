@@ -8,11 +8,15 @@ the object's position and other information. */
 #include <string>
 struct Point;
 
+using namespace std;
+
 class Sim_object {
 public:
     // *** define the constructor in Sim_object.cpp to output the supplied message
     // TODO: implement
-	Sim_object(const std::string& name) {}
+	Sim_object(const std::string& name) : name_(name) {
+	    cout << "Sim_object " << name << " constructed\n";
+	}
 
     // *** define the destructor in Sim_object.cpp to output the supplied message
     // TODO: implement

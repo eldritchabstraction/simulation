@@ -46,21 +46,31 @@ class Ship : public Sim_object, private track_base
 {
 public:
 	// initialize, then output constructor message
-	Ship(const std::string& name, Point position, double fuel_capacity = 0, double maximum_speed = 0,
-	    double fuel_consumption = 0, int resistance = 0) : Sim_object(name),
-	    max_fuel_(fuel_capacity), fuel_consumption_(fuel_consumption), fuel_(fuel_capacity),
-		resistance_(resistance), destination_island_(nullptr), max_speed_(maximum_speed),
-		state_(state_stopped) {}
-		
+    // TODO: these defaults are extrapolated, we need clear definitions
+	Ship(const std::string& name, Point position, double fuel_max = 1000,
+	    double speed_max = 10, double fuel_rate = 10, int resistance = 6) : Sim_object(name), track_base(position)
+	{
+	    fuel_max_ = fuel_max;
+	    fuel_ = fuel_max_;
+	    fuel_rate_ = fuel_rate;
+
+	    speed_max_ = speed_max;
+
+	    destination_island_ = nullptr;
+	    state_ = state_stopped;
+
+	    resistance_ = resistance;
+
+	    cout << "Ship " << name << " constructed\n";
+	}
+
 	// made pure virtual to mark this class as abstract, but defined anyway
 	// to output destructor message
 	virtual ~Ship();
 	
 	/*** Readers ***/
 	// return the current position
-	// TODO: how does track_base hold this thing's position?
-	// point get_location() const override {return track_base::get_position();}
-	Point location() const override { return Point(); }
+	Point location() const override {return track_base::get_position();}
 	
 	// Return true if ship can move (it is not dead in the water or in the process or sinking); 
 	bool can_move() const;
@@ -140,9 +150,9 @@ protected:
 
 private:
 	double fuel_;						// Current amount of fuel
-	double max_fuel_;
-	double fuel_consumption_;			// tons/nm required
-	double max_speed_;
+	double fuel_max_;
+	double fuel_rate_;			// tons/nm required
+	double speed_max_;
 
 	Point destination_point_;			// Current destination position
 	Island* destination_island_;		// Current destination island, if any

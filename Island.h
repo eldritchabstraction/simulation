@@ -14,8 +14,12 @@ You should delete this comment.
 #ifndef ISLAND_H
 #define ISLAND_H
 
+#include <iostream>
+
 #include "geometry.h"
 #include "Sim_object.h"
+
+using namespace std;
 
 class Island : public Sim_object
 {
@@ -23,7 +27,10 @@ public:
 	// initialize then output constructor message
     // TODO: implement
 	Island (const std::string& name, Point position, double fuel = 0., double production_rate = 0.) :
-	    Sim_object(name), position_(position), fuel_(fuel), production_rate_(production_rate) {};
+	    Sim_object(name), position_(position), fuel_(fuel), production_rate_(production_rate) {
+
+	    cout << "Island " << name << " constructed\n";
+	};
 
 	// output destructor message
 	~Island();

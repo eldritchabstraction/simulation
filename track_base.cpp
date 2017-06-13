@@ -10,23 +10,23 @@ using namespace std;
 
 track_base::track_base() : altitude(0.)
 {
-	std::cout << "track_base constructed" << std::endl;
+	std::cout << "Track_base constructed" << std::endl;
 }
 
 track_base::track_base(Point position_) : position(position_), altitude(0.)
 {
-	std::cout << "track_base constructed" << std::endl;
+	std::cout << "Track_base constructed" << std::endl;
 }
 
 track_base::track_base(Point position_, course_speed course_speed_, double altitude_) :
 		position(position_), c_speed(course_speed_), altitude(altitude_)
 {
-	std::cout << "track_base constructed" << std::endl;
+	std::cout << "Track_base constructed" << std::endl;
 }
 
 track_base::~track_base()
 {
-	std::cout << "track_base destructed" << std::endl;
+	std::cout << "Track_base destructed" << std::endl;
 }
 
 

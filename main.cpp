@@ -10,11 +10,10 @@ Main module. Your project must use this file as-is
 
 using namespace std;
 
+Model *global_model;
+
 // The main function creates the Model and Controller objects, 
 // then tells the Controller to run. 
-
-// Declare the global model pointer
-Model* global_model;
 
 int main ()
 {	

@@ -31,6 +31,8 @@ You should delete this comment.
 #include "Ship.h"
 #include "View.h"
 
+class Model;
+extern Model *global_model;
 
 class Model {
 public:
@@ -84,7 +86,7 @@ private:
 
 	std::map<std::string, Ship*> ships_;
 	std::map<std::string, Island*> islands_;
-	std::list<Sim_object*> sim_objects_;
+	std::map<std::string, Sim_object*> sim_objects_;
 
 	std::list<View *> views_;
 };

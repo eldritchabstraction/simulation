@@ -14,8 +14,6 @@ are defining it just to get the destructor message output.
 #include "geometry.h"
 #include "track_base.h"
 
-extern Model *global_model;
-
 int state_submerged = state_sinking | state_sunk | state_bottom;
 int state_moving = state_move_position | state_move_island | state_move_course;
 
@@ -121,7 +119,7 @@ void Ship::update()
 
 void Ship::describe() const
 {
-    cout << name() << " at " << location();
+    cout << name() << " at " << location() << ", fuel: " << fuel_ << " tons, resistance: " << resistance_ << endl;
     if (state_ & state_submerged)
     {
         switch (state_)
@@ -133,26 +131,27 @@ void Ship::describe() const
         case state_bottom:
             cout << "on the bottom"; break;
         default:
-            cout << "Error: unhandled state!" << state_ << endl;
+            cout << "Error: unhandled state!" << state_;
         }
+
+        cout << endl;
         return;
     }
 
-    cout << " fuel: " << fuel_ << " tons, resistance " << resistance_;
     switch (state_)
     {
     case state_move_position:
-        cout << " Moving to " << destination_point_ << " on course..."; break;
+        cout << "Moving to " << destination_point_ << " on course..."; break;
     case state_move_island:
-        cout << " Moving to " << get_destination_island()->location() << " on course..."; break;
+        cout << "Moving to " << get_destination_island()->location() << " on course..."; break;
     case state_move_course:
-        cout << " Moving on course"; break;
+        cout << "Moving on course"; break;
     case state_docked:
-        cout << " Docked at " << get_destination_island()->name(); break;
+        cout << "Docked at " << get_destination_island()->name(); break;
     case state_stopped:
-        cout << " Stopped"; break;
+        cout << "Stopped"; break;
     case state_dead_water:
-        cout << " Dead in the water"; break;
+        cout << "Dead in the water"; break;
     default:
         cout << "Error: unhandled state!" << state_ << endl;
     }
@@ -166,7 +165,7 @@ void Ship::broadcast_current_state() const
 
 double Ship::get_maximum_speed() const
 {
-    return max_speed_;
+    return speed_max_;
 }
 
 Island* Ship::get_docked_island() const
@@ -266,10 +265,10 @@ void Ship::refuel()
     if (!(state_ & state_docked))
         throw(runtime_error("Must be docked!"));
 
-    double missing_fuel = max_fuel_ - fuel_;
+    double missing_fuel = fuel_max_ - fuel_;
     if (missing_fuel < 0.05)
     {
-        fuel_ = max_fuel_;
+        fuel_ = fuel_max_;
         return;
     }
 
@@ -328,7 +327,7 @@ void Ship::calculate_movement(void)
 	// get full step distance we can move on this time step
 	double full_distance = track_base::get_speed() * time;
 	// get fuel required for full step distance
-	double full_fuel_required = full_distance * fuel_consumption_;	// tons = nm * tons/nm
+	double full_fuel_required = full_distance * fuel_rate_;	// tons = nm * tons/nm
     // how far and how long can we sail in this time period based on the fuel state?
     double distance_possible, time_possible;
     if (full_fuel_required <= fuel_)
@@ -338,7 +337,7 @@ void Ship::calculate_movement(void)
     }
     else
     {
-        distance_possible = fuel_ / fuel_consumption_;	// nm = tons / tons/nm
+        distance_possible = fuel_ / fuel_rate_;	// nm = tons / tons/nm
         time_possible = (distance_possible / full_distance) * time;
     }
 
@@ -349,7 +348,7 @@ void Ship::calculate_movement(void)
         // yes, make our new position the destination
         set_position(destination_point_);
         // we travel the destination distance, using that much fuel
-        double fuel_required = destination_distance * fuel_consumption_;
+        double fuel_required = destination_distance * fuel_rate_;
         fuel_ -= fuel_required;
         set_speed(0.);
         state_ = state_stopped;

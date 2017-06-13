@@ -46,12 +46,12 @@ vector<string> split_line(string input)
 
 Controller::Controller(): view_(NULL)
 {
-    cout << "controller constructing\n";
+    cout << "Controller constructed\n";
 }
 
 Controller::~Controller()
 {
-    cout << "controller destructing\n";
+    cout << "Controller destructed\n";
 }
 
 /*
@@ -61,6 +61,7 @@ void Controller::run(void)
 {
     while (1)
     {
+        cout << "\nTime " << global_model->get_time() << ": Enter command: ";
         string input_line;
         std::getline(cin, input_line);
 
@@ -118,7 +119,7 @@ void Controller::run(void)
             break;
         } else if (cmd == "status") {
             global_model->describe();
-        } else if (cmd ==  "go") {
+        } else if (cmd == "go") {
             global_model->update();
         } else if (cmd == "create") {
             double x, y;

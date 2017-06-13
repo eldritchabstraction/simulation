@@ -9,13 +9,19 @@ using namespace std;
 
 Model::Model() : time_(0)
 {
-	new Island("Exxon", Point(10, 10), 1000, 200);
-	new Island("Shell", Point(0, 30), 1000, 200);
-	new Island("Bermuda", Point(20, 20));
+    Island *island = new Island("Exxon", Point(10, 10), 1000, 200);
+	islands_.emplace("Exxon", island);
+	sim_objects_.emplace("Exxon", island);
+	island = new Island("Shell", Point(0, 30), 1000, 200);
+	islands_.emplace("Shell", island);
+	sim_objects_.emplace("Shell", island);
+	island = new Island("Bermuda", Point(20, 20));
+	islands_.emplace("Bermuda", island);
+	sim_objects_.emplace("Bermuda", island);
 	
-	create_ship("Ajax", "Cruiser", Point (15, 15));
-	create_ship("Xerxes", "Cruiser", Point (25, 25));
-	create_ship("Valdez", "Tanker", Point (30, 30));
+	add_ship(create_ship("Ajax", "Cruiser", Point(15, 15)));
+	add_ship(create_ship("Xerxes", "Cruiser", Point(25, 25)));
+	add_ship(create_ship("Valdez", "Tanker", Point(30, 30)));
 
 	cout << "Model constructed" << endl;
 }
@@ -52,14 +58,14 @@ Ship* Model::get_ship_ptr(const std::string& name) const
 void Model::describe() const
 {
     for (auto p : sim_objects_)
-        p->describe();
+        p.second->describe();
 }
 
 void Model::update() {
     time_++;
 
     for (auto p : sim_objects_)
-        p->update();
+        p.second->update();
 }
 
 void Model::add_ship(Ship* ship)
@@ -69,8 +75,11 @@ void Model::add_ship(Ship* ship)
     try
     {
     if (it == ships_.end())
+    {
         // add the ship to the maps
         ships_.insert(pair<string, Ship*>(ship->name(), ship));
+        sim_objects_.emplace(ship->name(), ship);
+    }
     else
         throw(runtime_error(err_object_dupe));
     }
