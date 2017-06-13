@@ -64,13 +64,13 @@ void Model::update() {
 
 void Model::add_ship(Ship* ship)
 {
-    auto it = ships_.find(ship->get_name());
+    auto it = ships_.find(ship->name());
 
     try
     {
     if (it == ships_.end())
         // add the ship to the maps
-        ships_.insert(pair<string, Ship*>(ship->get_name(), ship));
+        ships_.insert(pair<string, Ship*>(ship->name(), ship));
     else
         throw(runtime_error(err_object_dupe));
     }

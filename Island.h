@@ -27,7 +27,7 @@ public:
 
 	// output destructor message
 	~Island();
-	Point get_location() const override { return position_; }
+	Point location() const override { return position_; }
 
 	// if production_rate > 0, compute production_rate * unit time, and add to amount, and print an update message
 	void update() override;

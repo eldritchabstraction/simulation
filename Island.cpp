@@ -9,26 +9,26 @@ using namespace std;
 
 Island::~Island()
 {
-    cout << "Island " << this->get_name() << " destructed/n";
+    cout << "Island " << this->name() << " destructed/n";
 }
 
 void Island::update()
 {
     if (production_rate_ > 0)
         fuel_ += production_rate_;
-    cout << "Island " << this->get_name() << " now has " << fuel_ << " tons/n";
+    cout << "Island " << this->name() << " now has " << fuel_ << " tons/n";
 }
 
 void Island::describe() const
 {
-    cout << "Island " << this->get_name() << " at position " << position_.x << "," << position_.y <<
+    cout << "Island " << this->name() << " at position " << position_.x << "," << position_.y <<
         " fuel available: " << fuel_  << " tons/n";
 }
 
 void Island::broadcast_current_state() const
 {
     // eldr: islands can't go missing... right?
-    global_model->notify_location(this->get_name(), position_);
+    global_model->notify_location(this->name(), position_);
 }
 
 double Island::provide_fuel(double request)

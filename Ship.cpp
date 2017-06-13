@@ -23,7 +23,7 @@ using namespace std;
 
 Ship::~Ship()
 {
-	cout << "ship "  << get_name() << " destructed" << endl;
+	cout << "ship "  << name() << " destructed" << endl;
 }
 
 bool Ship::can_move() const
@@ -55,7 +55,7 @@ bool Ship::is_on_the_bottom() const
 bool Ship::can_dock(Island* island_ptr) const
 {
     // if distance between this and island_ptr is less than 0.1nm and this is stopped return true
-    if ((state_ & state_stopped) && (cartesian_distance(get_location(), island_ptr->get_location()) < 0.1))
+    if ((state_ & state_stopped) && (cartesian_distance(location(), island_ptr->location()) < 0.1))
         return true;
     else
         return false;
@@ -71,7 +71,7 @@ void Ship::update()
         case state_sinking:
             state_ = state_sunk;
             cout << "sunk";
-            global_model->notify_gone(get_name());
+            global_model->notify_gone(name());
             break;
         case state_sunk:
         case state_bottom:
@@ -99,16 +99,16 @@ void Ship::update()
         case state_move_position:
             calculate_movement();
             cout << "now at";
-            global_model->notify_location(get_name(), get_location());
+            global_model->notify_location(name(), location());
             break;
         case state_stopped:
-            cout << "stopped at " <<  get_location();
+            cout << "stopped at " <<  location();
             break;
         case state_docked:
             cout << "docked at " << get_docked_island();
             break;
         case state_dead_water:
-            cout << "dead in the water at " << get_location();
+            cout << "dead in the water at " << location();
             break;
         default:
             cout << "Error: unhandled state!" << state_ << endl;
@@ -121,7 +121,7 @@ void Ship::update()
 
 void Ship::describe() const
 {
-    cout << get_name() << " at " << get_location();
+    cout << name() << " at " << location();
     if (state_ & state_submerged)
     {
         switch (state_)
@@ -144,11 +144,11 @@ void Ship::describe() const
     case state_move_position:
         cout << " Moving to " << destination_point_ << " on course..."; break;
     case state_move_island:
-        cout << " Moving to " << get_destination_island()->get_location() << " on course..."; break;
+        cout << " Moving to " << get_destination_island()->location() << " on course..."; break;
     case state_move_course:
         cout << " Moving on course"; break;
     case state_docked:
-        cout << " Docked at " << get_destination_island()->get_name(); break;
+        cout << " Docked at " << get_destination_island()->name(); break;
     case state_stopped:
         cout << " Stopped"; break;
     case state_dead_water:
@@ -161,12 +161,12 @@ void Ship::describe() const
 
 void Ship::broadcast_current_state() const
 {
-    global_model->notify_location(get_name(), get_location());
+    global_model->notify_location(name(), location());
 }
 
 double Ship::get_maximum_speed() const
 {
-
+    return max_speed_;
 }
 
 Island* Ship::get_docked_island() const
@@ -189,7 +189,7 @@ void Ship::set_destination_position_and_speed(Point destination_position, double
     else if (speed > get_maximum_speed())
         throw(runtime_error("ship cannot go that fast!"));
 
-    auto compass_vector = Compass_vector(get_location(), destination_position);
+    auto compass_vector = Compass_vector(location(), destination_position);
     set_speed(speed);
     set_course(compass_vector.direction);
 
@@ -211,13 +211,13 @@ void Ship::set_destination_island_and_speed(Island* destination_island, double s
     else if (speed > get_maximum_speed())
         throw(runtime_error("ship cannot go that fast!"));
 
-    auto compass_vector = Compass_vector(get_location(), destination_island->get_location());
+    auto compass_vector = Compass_vector(location(), destination_island->location());
     set_speed(speed);
     set_course(compass_vector.direction);
 
     state_ = state_move_island;
 
-    cout << " will sail on " << get_course_speed() << " to " << destination_island->get_name();
+    cout << " will sail on " << get_course_speed() << " to " << destination_island->name();
 
     destination_island_ = destination_island;
 }
@@ -247,7 +247,7 @@ void Ship::stop()
 
     set_speed(0.);
 
-    cout << " stopping at " << get_location();
+    cout << " stopping at " << location();
 }
 
 void Ship::dock(Island* island_ptr)
@@ -255,10 +255,10 @@ void Ship::dock(Island* island_ptr)
     if (state_ != state_stopped || !can_dock(island_ptr))
         throw(runtime_error("Can't dock!"));
 
-    set_position(island_ptr->get_location());
-    global_model->notify_location(get_name(), get_position());
+    set_position(island_ptr->location());
+    global_model->notify_location(name(), get_position());
 
-    cout << "Docked at " << island_ptr->get_name();
+    cout << "Docked at " << island_ptr->name();
 }
 
 void Ship::refuel()
@@ -275,7 +275,7 @@ void Ship::refuel()
 
     fuel_ += destination_island_->provide_fuel(missing_fuel);
 
-    cout << get_name() << " now has " << setprecision(3) << fuel_ << "tons of fuel";
+    cout << name() << " now has " << setprecision(3) << fuel_ << "tons of fuel";
 }
 
 void Ship::set_load_destination(Island*)
@@ -298,7 +298,7 @@ void Ship::receive_hit(int hit_force, Ship* attacker_ptr)
 {
     resistance_ -= hit_force;
 
-    cout << get_name() << " hit with " << hit_force << "resistance now " << resistance_ << endl;
+    cout << name() << " hit with " << hit_force << "resistance now " << resistance_ << endl;
 }
 
 /* Private Function Definitions */
@@ -324,7 +324,7 @@ void Ship::calculate_movement(void)
 	// given the fuel state, then decide what to do.
 	double time = 1.0;	// "full step" time
 	// get the distance to destination
-	double destination_distance = cartesian_distance(get_location(), destination_point_);
+	double destination_distance = cartesian_distance(location(), destination_point_);
 	// get full step distance we can move on this time step
 	double full_distance = track_base::get_speed() * time;
 	// get fuel required for full step distance
@@ -371,4 +371,9 @@ void Ship::calculate_movement(void)
             fuel_ -= full_fuel_required;
         }
     }
+}
+
+double Ship::get_fuel() const
+{
+    return fuel_;
 }

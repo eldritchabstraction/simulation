@@ -39,12 +39,15 @@ enum states
     state_bottom        = 0b100000000,
 };
 
+extern int state_moving;
+extern int state_submerged;
+
 class Ship : public Sim_object, private track_base
 {
 public:
 	// initialize, then output constructor message
-	Ship(const std::string& name, Point position, double fuel_capacity, double maximum_speed,
-	    double fuel_consumption, int resistance) : Sim_object(name),
+	Ship(const std::string& name, Point position, double fuel_capacity = 0, double maximum_speed = 0,
+	    double fuel_consumption = 0, int resistance = 0) : Sim_object(name),
 	    max_fuel_(fuel_capacity), fuel_consumption_(fuel_consumption), fuel_(fuel_capacity),
 		resistance_(resistance), destination_island_(nullptr), max_speed_(maximum_speed),
 		state_(state_stopped) {}
@@ -57,7 +60,7 @@ public:
 	// return the current position
 	// TODO: how does track_base hold this thing's position?
 	// point get_location() const override {return track_base::get_position();}
-	Point get_location() const override { return Point(); }
+	Point location() const override { return Point(); }
 	
 	// Return true if ship can move (it is not dead in the water or in the process or sinking); 
 	bool can_move() const;
@@ -127,13 +130,14 @@ public:
 protected:
 	// future projects may need additional protected member functions
 
+	double get_fuel() const;
 	double get_maximum_speed() const;
 	// return pointer to the island currently docked at, or nullptr if not docked
 	Island* get_docked_island() const;
 	// return pointer to current destination island, nullptr if not set
 	Island* get_destination_island() const;
-
 	int state_;
+
 private:
 	double fuel_;						// Current amount of fuel
 	double max_fuel_;

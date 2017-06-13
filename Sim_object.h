@@ -18,13 +18,13 @@ public:
     // TODO: implement
     virtual ~Sim_object() {}
 
-	const std::string& get_name() const { return name_; }
+	const std::string& name() const { return name_; }
     
 	/* Interface for derived classes */
 	// Ask model to notify views of current state
     virtual void broadcast_current_state() const = 0;
 
-	virtual Point get_location() const = 0;
+	virtual Point location() const = 0;
 	virtual void describe() const = 0;
 	virtual void update() = 0;
 	
