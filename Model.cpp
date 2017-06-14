@@ -106,6 +106,8 @@ void Model::add_ship(Ship* ship)
 void Model::attach(View *view)
 {
     views_.push_front(view);
+    for (auto p : sim_objects_)
+        p.second->broadcast_current_state();
 }
 
 void Model::detach(View *view)

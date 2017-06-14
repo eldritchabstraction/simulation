@@ -150,6 +150,7 @@ void Controller::run(void)
             if (view_)
                 throw runtime_error("View is already open!");
             view_= new View();
+            global_model->attach(view_);
         } else if (cmd == "close") {
             // detach the view from the model and destroy; not exist error
             if (!view_)

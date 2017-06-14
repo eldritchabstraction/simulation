@@ -46,12 +46,9 @@ typedef std::vector<std::vector<std::string> > char_map_t;
 class View {
 public:
 	// default constructor sets the default size, scale, and origin, outputs constructor message
-    // TODO: implement
-	View(): size_(25), scale_(2.0), origin_(Point(-10, -10)){}
+	View();
     // destructor outputs a message
-    // TODO: implement
-    ~View() {}
-	
+    ~View();
 	// Save the supplied name and location for future use in a draw() call
 	// If the name is already present,the new location replaces the previous one.
 	void update_location(const std::string& name, Point location);

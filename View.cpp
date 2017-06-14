@@ -14,10 +14,21 @@
 
 #include "utility.h"
 
-using std::vector;
-using std::string; using std::stringstream;
-using std::cout;
+using namespace std;
+View::View()
+{
+    size_ = 25;
+    scale_ = 2.0;
+    origin_ = Point(-10.0, -10.0);
 
+    cout << "View constructed\n";
+}
+
+View::~View()
+{
+    cout << "View destructed\n";
+
+}
 // Calculate the cell subscripts corresponding to the supplied location parameter, 
 // using the current size, scale, and origin of the display. 
 // This function assumes that origin is a  member variable of type point,
@@ -97,9 +108,9 @@ void View::generate(char_map_t &char_map) const
         {
             // by default, we will be pushing back a blank
             string cursor_value = ". ";
-            double cursor_x = j * scale_, cursor_y = i * scale_;
+            double cursor_x = origin_.x + j * scale_, cursor_y = origin_.y + i * scale_;
             // iterate through the list of objects and see if there's an object to place
-            for (auto it = sim_objects.begin(); it != sim_objects.end(); ++it)
+            for (auto it = sim_objects.begin(); it != sim_objects.end();)
             {
                 auto object = *it;
                 string object_name = object.first;
@@ -107,14 +118,19 @@ void View::generate(char_map_t &char_map) const
                 double object_x = object_point.x, object_y = object_point.y;
                 // the match won't normally be precise, we basically just need the object to be in
                 // the "box" defined by the cursor
-                if ((object_x >= (cursor_x + scale_)) && (object_x < (cursor_x + scale_)) &&
-                    (object_y >= (cursor_y + scale_)) && (object_y < (cursor_y + scale_))
+                if ((object_x >= cursor_x) && (object_x < (cursor_x + scale_)) &&
+                    (object_y >= cursor_y) && (object_y < (cursor_y + scale_))
                    )
                 {
                     if (cursor_value == ". ")
-                        cursor_value = object_name.substr(0,1);
+                        cursor_value = object_name.substr(0,2);
                     else
                         cursor_value = "* ";
+                    sim_objects.erase(it++);
+                }
+                else
+                {
+                    ++it;
                 }
             }
             row_stream << cursor_value;
@@ -122,6 +138,17 @@ void View::generate(char_map_t &char_map) const
         vector<string> row = { row_stream.str() };
         char_map.push_back(row);
     }
+
+    // any remaining objects in our local sim_objects map are "outside the map"
+    for (auto p : sim_objects)
+    {
+        vector<string> outside;
+        outside.push_back(p.first); outside.push_back(" outside the map");
+        char_map.push_back(outside);
+    }
+
+    // generate the table header
+    cout << "Display size: " << size_ << ", scale: " << setprecision(2) << scale_ << ", origin: " << origin_ << endl;
 }
 
 void View::draw() const
@@ -150,3 +177,4 @@ void View::set_scale(double scale) {
 void View::set_origin(Point origin) {
     origin_ = origin;
 }
+
