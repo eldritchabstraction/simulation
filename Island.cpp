@@ -9,14 +9,17 @@ using namespace std;
 
 Island::~Island()
 {
-    cout << "Island " << name() << " destructed/n";
+    cout << "Island " << name() << " destructed\n";
 }
 
 void Island::update()
 {
+    if (fuel_ <= 0)
+        return;
     if (production_rate_ > 0)
         fuel_ += production_rate_;
-    cout << "Island " << name() << " now has " << fuel_ << " tons/n";
+
+    cout << "Island " << name() << " now has " << fuel_ << " tons\n";
 }
 
 void Island::describe() const
@@ -45,10 +48,13 @@ double Island::provide_fuel(double request)
         fuel_ -= request;
     }
 
+    cout << "Island " << name() << " supplied " << return_fuel << " tons of fuel\n";
+
     return return_fuel;
 }
 
 void Island::accept_fuel(double amount)
 {
     fuel_ += amount;
+    cout << "Island " << name() << " now has " << fuel_ << " tons\n";
 }

@@ -66,6 +66,18 @@ void Model::update() {
 
     for (auto p : sim_objects_)
         p.second->update();
+
+    for (auto p : ships_)
+    {
+        if (p.second->is_on_the_bottom())
+        {
+            Ship *ship = p.second;
+
+            ships_.erase(ship->name());
+            sim_objects_.erase(ship->name());
+            delete ship;
+        }
+    }
 }
 
 void Model::add_ship(Ship* ship)
@@ -111,4 +123,14 @@ void Model::notify_gone(const std::string& name)
 {
     for (auto p : views_)
         p->update_remove(name);
+}
+
+Model::~Model()
+{
+    for (auto p : sim_objects_)
+    {
+        delete p.second;
+    }
+
+    cout << "Model destructed\n";
 }

@@ -70,6 +70,7 @@ int string_to_T(const std::string &input, T &output)
  */
 int validate_ship_name(std::string name);
 
+double validate_double(std::string input);
 
 
 #endif

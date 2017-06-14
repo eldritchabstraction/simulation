@@ -39,8 +39,7 @@ public:
 	// create the initial objects, output constructor message
 	Model();
 	// destroy all objects, output destructor message
-    // TODO: implement
-	~Model() {}
+	~Model();
 
 	// return the current time
 	int get_time() {return time_;}

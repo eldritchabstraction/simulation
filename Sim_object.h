@@ -20,7 +20,9 @@ public:
 
     // *** define the destructor in Sim_object.cpp to output the supplied message
     // TODO: implement
-    virtual ~Sim_object() {}
+    virtual ~Sim_object() {
+        cout << "Sim_object " << name() << " destructed\n";
+    }
 
 	const std::string& name() const { return name_; }
     

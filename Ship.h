@@ -46,9 +46,8 @@ class Ship : public Sim_object, private track_base
 {
 public:
 	// initialize, then output constructor message
-    // TODO: these defaults are extrapolated, we need clear definitions
-	Ship(const std::string& name, Point position, double fuel_max = 1000,
-	    double speed_max = 10, double fuel_rate = 10, int resistance = 6) : Sim_object(name), track_base(position)
+	Ship(const std::string& name, Point position, double fuel_max,
+	    double speed_max, double fuel_rate, int resistance) : Sim_object(name), track_base(position)
 	{
 	    fuel_max_ = fuel_max;
 	    fuel_ = fuel_max_;

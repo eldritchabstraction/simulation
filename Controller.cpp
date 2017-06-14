@@ -15,10 +15,7 @@
 #include "Ship.h"
 #include "Ship_factory.h"
 
-using std::cout; using std::endl;
-using std::string;
-using std::vector;
-using std::runtime_error;
+using namespace std;
 
 extern Model *global_model;
 
@@ -54,6 +51,7 @@ Controller::~Controller()
     cout << "Controller destructed\n";
 }
 
+
 /*
  * run: a command loop where a user types in commands and they are carried out
  */
@@ -67,16 +65,83 @@ void Controller::run(void)
 
         vector<string> split = split_line(input_line);
 
-        /*
-        if (is_ship(split[1]))
+        string cmd, ship_name;
+
+        Ship *ship = nullptr;
+        ship_name = split[0];
+        if ((ship = global_model->get_ship_ptr(ship_name)))
         {
-            // do ship stuff
+            try
+            {
+                cmd = split[1];
+
+                if (cmd == "course")
+                {
+                    double heading = validate_double(split[2]);
+                    double speed = validate_double(split[3]);
+                    ship->set_course_and_speed(heading, speed);
+                }
+                else if (cmd == "position")
+                {
+                    double x = validate_double(split[2]);
+                    double y = validate_double(split[3]);
+                    double speed = validate_double(split[4]);
+                    Point position = Point(x, y);
+                    ship->set_destination_position_and_speed(position, speed);
+                }
+                else if (cmd == "destination")
+                {
+                    string island_name = split[2];
+                    double speed = validate_double(split[3]);
+                    ship->set_destination_island_and_speed(global_model->get_island_ptr(island_name), speed);
+                }
+                else if (cmd == "load_at")
+                {
+                    ship->set_load_destination(global_model->get_island_ptr(split[2]));
+                }
+                else if (cmd == "unload_at")
+                {
+                    ship->set_unload_destination(global_model->get_island_ptr(split[2]));
+                }
+                else if (cmd == "dock_at")
+                {
+                    ship->dock(global_model->get_island_ptr(split[2]));
+                }
+                else if (cmd == "attack")
+                {
+                    ship->attack(global_model->get_ship_ptr(split[2]));
+                }
+                else if (cmd == "refuel")
+                {
+                    ship->refuel();
+                }
+                else if (cmd == "stop")
+                {
+                    ship->stop();
+                }
+                else if (cmd == "stop_attack")
+                {
+                    ship->stop_attack();
+                }
+                else
+                {
+                    cout << "Error unhandled command: " << input_line << endl;
+                }
+
+
+            }
+            catch (runtime_error &e)
+            {
+                cout << e.what() << endl;
+            }
+            cout << "debug: " << input_line << endl;
+            continue;
         }
-        */
+
 
         try {
 
-        std::string cmd = split[0];
+        cmd = split[0];
 
         //  *** view commands ***
         if (cmd == "open")
@@ -125,13 +190,18 @@ void Controller::run(void)
             double x, y;
             if (validate_ship_name(split[1]) || string_to_T(split[3], x) || string_to_T(split[4], y))
                 continue;
-            create_ship(split[1], split[2], Point(x,y));
+            Ship *ship = create_ship(split[1], split[2], Point(x,y));
+            global_model->add_ship(ship);
+        } else {
+            cout << "Error unhandled command: " << input_line << endl;
         }
+
 
         } catch (std::exception &e) {
             cout << e.what() << endl;
 
         }
+        // cout << "debug: " << input_line << endl;
     }
 
     cout << "Done\n";

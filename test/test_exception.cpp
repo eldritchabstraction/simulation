@@ -23,6 +23,27 @@ void erroneous (void)
     }
 }
 
+double validate_double(std::string input)
+{
+    try
+    {
+        try
+        {
+            double number = std::stol(input, nullptr, 10);
+        }
+        catch (std::invalid_argument &e)
+        {
+            throw(std::runtime_error("invalid argument caught"));
+        }
+    }
+    catch (std::runtime_error &e)
+    {
+        std::cout << e.what() << std::endl;
+        return 1;
+    }
+    return 0;
+}
+
 int validate_int(std::string input)
 {
     try
